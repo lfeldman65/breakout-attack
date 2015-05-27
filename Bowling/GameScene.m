@@ -7,7 +7,7 @@
 //
 
 #import "GameScene.h"
-#import "GameOverScene.h"
+#import "HomeScene.h"
 
 static NSString* ballCategoryName = @"ball";
 static NSString* paddleCategoryName = @"paddle";
@@ -28,34 +28,18 @@ static const uint32_t paddleCategory = 0x1 << 3; // 0000000000000000000000000000
 
 @implementation GameScene
 
-
-static inline CGPoint rwSub(CGPoint a, CGPoint b) {
-    return CGPointMake(a.x - b.x, a.y - b.y);
-}
-
-
-static inline float rwLength(CGPoint a) {
-    return sqrtf(a.x * a.x + a.y * a.y);
-}
-
-// Makes a vector with a length of 1
-static inline CGPoint rwNormalize(CGPoint a) {
-    float length = rwLength(a);
-    if (length == 0) {
-        length = 1;
-    }
-    return CGPointMake(a.x / length, a.y / length);
-}
-
-
-float swipeTime;
-
+NSInteger blocksHit;
 
 -(id)initWithSize:(CGSize)size {
+    
     if (self = [super initWithSize:size]) {
+        
     //    SKSpriteNode* background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.png"];
     //    background.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
     //    [self addChild:background];
+        
+        blocksHit = 0;
+        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
         
         self.physicsWorld.gravity = CGVectorMake(0.0f, 0.0f);
         
@@ -69,7 +53,7 @@ float swipeTime;
         // 1
         SKSpriteNode* ball = [SKSpriteNode spriteNodeWithImageNamed: @"ball.png"];
         ball.name = ballCategoryName;
-        ball.position = CGPointMake(self.frame.size.width/3, self.frame.size.height/3);
+        ball.position = CGPointMake(0.5*self.frame.size.width, 0.7*self.frame.size.height);
         [self addChild:ball];
         
         // 2
@@ -77,13 +61,18 @@ float swipeTime;
         // 3
         ball.physicsBody.friction = 0.0f;
         // 4
-        ball.physicsBody.restitution = 1.0f;
+        ball.physicsBody.restitution = 1.1f;
         // 5
         ball.physicsBody.linearDamping = 0.0f;
         // 6
         ball.physicsBody.allowsRotation = NO;
         
-        //   [ball.physicsBody applyImpulse:CGVectorMake(10.0f, -10.0f)];
+        ball.physicsBody.affectedByGravity = YES;
+        
+        
+        // To do: random impulse vector
+        
+        [ball.physicsBody applyImpulse:CGVectorMake(5.0f, -15.0f)];
         
         SKSpriteNode* paddle = [[SKSpriteNode alloc] initWithImageNamed: @"paddle.png"];
         paddle.name = paddleCategoryName;
@@ -92,7 +81,8 @@ float swipeTime;
         paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.frame.size];
         paddle.physicsBody.restitution = 0.1f;
         paddle.physicsBody.friction = 0.4f;
-        // make physicsBody static
+        
+        // make paddle static
         paddle.physicsBody.dynamic = NO;
         
         CGRect bottomRect = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
@@ -103,64 +93,59 @@ float swipeTime;
         bottom.physicsBody.categoryBitMask = bottomCategory;
         ball.physicsBody.categoryBitMask = ballCategory;
         paddle.physicsBody.categoryBitMask = paddleCategory;
-        
+
         ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory;
         
         self.physicsWorld.contactDelegate = self;
-        
-        // 1 Store some useful variables
-        int numberOfBlocks = 3;
-        int blockWidth = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"].size.width;
-        float padding = 20.0f;
-        // 2 Calculate the xOffset
-        float xOffset = (self.frame.size.width - (blockWidth * numberOfBlocks + padding * (numberOfBlocks-1))) / 2;
-        // 3 Create the blocks and add them to the scene
-        for (int i = 1; i <= numberOfBlocks; i++) {
-            SKSpriteNode* block = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"];
-            block.position = CGPointMake((i-0.5f)*block.frame.size.width + (i-1)*padding + xOffset, self.frame.size.height * 0.8f);
-            block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.frame.size];
-            block.physicsBody.allowsRotation = NO;
-            block.physicsBody.friction = 0.0f;
-            block.name = blockCategoryName;
-            block.physicsBody.categoryBitMask = blockCategory;
-            [self addChild:block];
-        }
+        [self addRowOfBlocks];
+
     }
     return self;
 }
 
 -(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
-    /* Called when a touch begins */
-    /*  UITouch* touch = [touches anyObject];
-     CGPoint touchLocation = [touch locationInNode:self];
-     
-     SKPhysicsBody* body = [self.physicsWorld bodyAtPoint:touchLocation];
-     if (body && [body.node.name isEqualToString: paddleCategoryName]) {
-     NSLog(@"Began touch on paddle");
-     self.isFingerOnPaddle = YES;*
-     
-     }*/
     
-    UITouch *touch = [touches anyObject];
-    // [self.view setUserInteractionEnabled:NO];
-    self.firstPoint = [touch locationInNode:self];
-    NSLog(@"touches began");
-    swipeTime = 0;
+    //Called when a touch begins
     
-    self.swipeTimer = [NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(swipeDuration) userInfo:nil repeats:YES];
+    UITouch* touch = [touches anyObject];
+    CGPoint touchLocation = [touch locationInNode:self];
+     
+    SKPhysicsBody *body = [self.physicsWorld bodyAtPoint:touchLocation];
+    if (body && [body.node.name isEqualToString: paddleCategoryName]) {
+  //  NSLog(@"Began touch on paddle");
+    self.isFingerOnPaddle = YES;
+     
+     }
 }
 
-- (void)swipeDuration {
+-(void)addRowOfBlocks {
     
-    NSLog(@"swipe duration");
-    swipeTime = swipeTime + .001;
-    
-}
+    int numberOfBlocks = 3;
+    int blockWidth = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"].size.width;
+    float padding = 20.0f;
+    // 2 Calculate the xOffset
+    float xOffset = (self.frame.size.width - (blockWidth * numberOfBlocks + padding * (numberOfBlocks-1))) / 2;
+    // 3 Create the blocks and add them to the scene
+    for (int i = 1; i <= numberOfBlocks; i++) {
+        SKSpriteNode* block = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"];
+        block.position = CGPointMake((i-0.5f)*block.frame.size.width + (i-1)*padding + xOffset, self.frame.size.height*0.95f);
+        block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.frame.size];
+        block.physicsBody.allowsRotation = NO;
+        block.physicsBody.friction = 0.0f;
+        block.physicsBody.velocity = CGVectorMake(0, -50.0);
+        block.name = blockCategoryName;
+        block.physicsBody.categoryBitMask = blockCategory;
+        block.physicsBody.contactTestBitMask = bottomCategory | paddleCategory;
+        block.physicsBody.affectedByGravity = NO;
 
+        [self addChild:block];
+    }
+
+}
 
 -(void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
     // 1 Check whether user tapped paddle
-    /*  if (self.isFingerOnPaddle) {
+    if (self.isFingerOnPaddle) {
      // 2 Get touch location
      UITouch* touch = [touches anyObject];
      CGPoint touchLocation = [touch locationInNode:self];
@@ -174,30 +159,12 @@ float swipeTime;
      paddleX = MIN(paddleX, self.size.width - paddle.size.width/2);
      // 6 Update position of paddle
      paddle.position = CGPointMake(paddleX, paddle.position.y);
-     }*/
+     }
 }
 
 -(void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
-    // self.isFingerOnPaddle = NO;
-    
-    [self.swipeTimer invalidate];
-    
-    UITouch *touch = [touches anyObject];
-    self.lastPoint = [touch locationInNode:self];
-    
-    CGPoint tapVector = rwSub(self.lastPoint, self.firstPoint); // (vector) last point - first point
-    
-    NSLog(@"tapVector = %f %f", tapVector.x, tapVector.y);
-    
-    self.shotVectorUnit = rwNormalize(tapVector);       // unit length 1
-    
-    self.ballVelocityX = 50*self.shotVectorUnit.x/swipeTime;
-    self.ballVelocityY = 50*self.shotVectorUnit.y/swipeTime;
-    
-    SKNode* ball = [self childNodeWithName: ballCategoryName];
-    
-    [ball.physicsBody applyImpulse:CGVectorMake(self.ballVelocityX, self.ballVelocityY)];
-    
+     self.isFingerOnPaddle = NO;
+
 }
 
 - (void)didBeginContact:(SKPhysicsContact*)contact {
@@ -212,20 +179,40 @@ float swipeTime;
         firstBody = contact.bodyB;
         secondBody = contact.bodyA;
     }
-    // 3 react to the contact between ball and bottom
+
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == bottomCategory) {
-        //TODO: Replace the log statement with display of Game Over Scene
-        //   GameOverScene* gameOverScene = [[GameOverScene alloc] initWithSize:self.frame.size playerWon:NO];
-        //   [self.view presentScene:gameOverScene];
+
+        [self gameOver];
+        
     }
+    
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == blockCategory) {
         [secondBody.node removeFromParent];
-        if ([self isGameWon]) {
-                  GameOverScene* gameWonScene = [[GameOverScene alloc] initWithSize:self.frame.size playerWon:YES];
-                  [self.view presentScene:gameWonScene];
-        }
+        blocksHit++;
+        NSLog(@"blocks hit = %li", blocksHit);
+    }
+    
+    if (firstBody.categoryBitMask == bottomCategory && secondBody.categoryBitMask == blockCategory) {
+
+        [self gameOver];
+        
+    }
+    
+    if (firstBody.categoryBitMask == blockCategory && secondBody.categoryBitMask == paddleCategory) {
+        
+        [self gameOver];
+        
     }
 }
+
+-(void)gameOver {
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:blocksHit forKey:@"lastGameScore"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    HomeScene *homeScene = [[HomeScene alloc] initWithSize:self.frame.size];
+    [self.view presentScene:homeScene];
+}
+
 
 -(BOOL) isGameWon {
     int numberOfBricks = 0;
@@ -234,14 +221,17 @@ float swipeTime;
             numberOfBricks++;
         }
     }
-    return numberOfBricks <= 0;
+    return numberOfBricks <= 0;  // if numberOfBricks <= 0, return true
 }
 
 -(void)update:(CFTimeInterval)currentTime {
+    
     /* Called before each frame is rendered */
     SKNode* ball = [self childNodeWithName: ballCategoryName];
     static int maxSpeed = 1000;
     float speed = sqrt(ball.physicsBody.velocity.dx*ball.physicsBody.velocity.dx + ball.physicsBody.velocity.dy * ball.physicsBody.velocity.dy);
+   // NSLog(@"speed = %f",speed);
+
     if (speed > maxSpeed) {
         ball.physicsBody.linearDamping = 0.4f;
     } else {

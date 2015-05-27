@@ -7,7 +7,7 @@
 //
 
 #import "GameViewController.h"
-#import "GameScene.h"
+#import "HomeScene.h"
 
 
 @implementation GameViewController
@@ -22,27 +22,15 @@
         skView.showsNodeCount = YES;
         
         // Create and configure the scene.
-        SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
-        scene.scaleMode = SKSceneScaleModeAspectFill;
+
+        HomeScene *homeScene = [[HomeScene alloc] initWithSize:skView.bounds.size];
+        homeScene.scaleMode = SKSceneScaleModeAspectFill;
         
         // Present the scene.
-        [skView presentScene:scene];
+        [skView presentScene:homeScene];
     }
 }
 
-- (BOOL)shouldAutorotate
-{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return UIInterfaceOrientationMaskAllButUpsideDown;
-    } else {
-        return UIInterfaceOrientationMaskAll;
-    }
-}
 
 - (void)didReceiveMemoryWarning
 {

@@ -15,8 +15,17 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOption
+
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                             [NSNumber numberWithBool:false], @"wasGameLaunched",
+                                                             [NSNumber numberWithDouble:0], @"highScore",
+                                                             [NSNumber numberWithDouble:0], @"totalMonstersKilled",
+                                                             [NSNumber numberWithInt:0], @"lastGameScore",
+                                                             [NSNumber numberWithBool:false], @"fullVersion",
+                                                             [NSNumber numberWithBool:true], @"isSoundOn",
+                                                             nil]];
     return YES;
 }
 
