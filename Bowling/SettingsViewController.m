@@ -7,8 +7,7 @@
 //
 
 #import "SettingsViewController.h"
-
-//#import "Shop.h"
+#import "Shop.h"
 
 @interface SettingsViewController () <UIAlertViewDelegate>
 
@@ -18,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *soundSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *gcButton;
 @property (weak, nonatomic) IBOutlet UIButton *fullButton;
-//@property (nonatomic) Shop *ourNewShop;
+@property (nonatomic) Shop *ourNewShop;
 
 - (IBAction)soundSwitched:(id)sender;
 - (IBAction)gameCenterPressed:(id)sender;
@@ -110,13 +109,12 @@
 
 - (IBAction)fullVersionPressed:(id)sender {
     
-    // instantiate
     
-   // [self.ourNewShop validateProductIdentifiers];
+    [self.ourNewShop validateProductIdentifiers];
     
 }
 
-/*
+
 - (Shop *)ourNewShop {  // SettingsViewController is the delegate for the Shop class
     
     if (!_ourNewShop) {
@@ -145,7 +143,7 @@
             break;
         }
     }
-}*/
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

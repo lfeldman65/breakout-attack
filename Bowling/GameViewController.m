@@ -172,6 +172,8 @@ int iAdHeight;
     
     if ([[notification name] isEqualToString:@"gameOverNotification"]) {
         
+        NSLog(@"game over");
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         
         self.startButton.hidden = NO;

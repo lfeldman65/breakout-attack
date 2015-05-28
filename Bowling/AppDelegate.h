@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@import StoreKit;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, SKPaymentTransactionObserver>
 
 @property (strong, nonatomic) UIWindow *window;
 

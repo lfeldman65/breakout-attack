@@ -12,11 +12,14 @@ static NSString* ballCategoryName = @"ball";
 static NSString* paddleCategoryName = @"paddle";
 static NSString* blockCategoryName = @"block";
 static NSString* blockNodeCategoryName = @"blockNode";
+static NSString* superBlockCategoryName = @"superBlockNode";
 
-static const uint32_t ballCategory  = 0x1 << 0;  // 00000000000000000000000000000001
-static const uint32_t bottomCategory = 0x1 << 1; // 00000000000000000000000000000010
-static const uint32_t blockCategory = 0x1 << 2;  // 00000000000000000000000000000100
-static const uint32_t paddleCategory = 0x1 << 3; // 00000000000000000000000000001000
+static const uint32_t ballCategory  = 0x1 << 0;
+static const uint32_t bottomCategory = 0x1 << 1;
+static const uint32_t blockCategory = 0x1 << 2;
+static const uint32_t paddleCategory = 0x1 << 3;
+static const uint32_t superBlockCategory = 0x1 << 4;
+
 
 @interface GameScene()
 
@@ -43,9 +46,11 @@ NSInteger blocksHit;
     //    [self addChild:background];
         NSLog(@"init");
         blocksHit = 0;
-        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
+        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
         
-        self.physicsWorld.gravity = CGVectorMake(0.0f, -0.2f);
+         self.superBlockTimer = [NSTimer scheduledTimerWithTimeInterval:13.0 target:self selector:@selector(addSuperBlock) userInfo:nil repeats:YES];
+        
+        self.physicsWorld.gravity = CGVectorMake(0.0f, -1.0f);
         
         // 1 Create an physics body that borders the screen
         SKPhysicsBody* borderBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
@@ -80,7 +85,7 @@ NSInteger blocksHit;
         
         paddle = [[SKSpriteNode alloc] initWithImageNamed: @"paddle.png"];
         paddle.name = paddleCategoryName;
-        paddle.position = CGPointMake(CGRectGetMidX(self.frame), paddle.frame.size.height * 0.6f);
+        paddle.position = CGPointMake(CGRectGetMidX(self.frame), paddle.frame.size.height * 0.8f);
         [self addChild:paddle];
         paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.frame.size];
         paddle.physicsBody.restitution = 0.1f;
@@ -98,7 +103,7 @@ NSInteger blocksHit;
         ball.physicsBody.categoryBitMask = ballCategory;
         paddle.physicsBody.categoryBitMask = paddleCategory;
 
-        ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory;
+        ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory;
         
         self.physicsWorld.contactDelegate = self;
         [self addRowOfBlocks];
@@ -121,6 +126,30 @@ NSInteger blocksHit;
      
      }
 }
+
+-(void)addSuperBlock {
+    
+    
+    SKSpriteNode *superBlock = [SKSpriteNode spriteNodeWithImageNamed:@"paddle.png"];
+    
+    int minX = superBlock.size.width / 2;
+    int maxX = self.frame.size.width - superBlock.size.width / 2;
+    int rangeX = maxX - minX;
+    int actualXStart = (arc4random() % rangeX) + minX;
+    
+    superBlock.position = CGPointMake(actualXStart, self.frame.size.height*0.95f);
+    superBlock.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:superBlock.frame.size];
+    superBlock.physicsBody.allowsRotation = NO;
+    superBlock.physicsBody.friction = 0.0f;
+    superBlock.physicsBody.velocity = CGVectorMake(0, -50.0);
+    superBlock.name = superBlockCategoryName;
+    superBlock.physicsBody.categoryBitMask = superBlockCategory;
+    superBlock.physicsBody.contactTestBitMask = bottomCategory | paddleCategory;
+    superBlock.physicsBody.affectedByGravity = NO;
+    [self addChild:superBlock];
+    
+}
+
 
 -(void)addRowOfBlocks {
     
@@ -172,6 +201,8 @@ NSInteger blocksHit;
 }
 
 - (void)didBeginContact:(SKPhysicsContact*)contact {
+    
+    NSLog(@"collision");
     // 1 Create local variables for two physics bodies
     SKPhysicsBody* firstBody;
     SKPhysicsBody* secondBody;
@@ -193,7 +224,8 @@ NSInteger blocksHit;
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == blockCategory) {
         [secondBody.node removeFromParent];
         blocksHit++;
-      //  NSLog(@"blocks hit = %li", (long)blocksHit);
+        [ball.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
+
     }
     
     if (firstBody.categoryBitMask == bottomCategory && secondBody.categoryBitMask == blockCategory) {
@@ -207,16 +239,38 @@ NSInteger blocksHit;
         [self gameOver];
         
     }
+    
+    if (firstBody.categoryBitMask == bottomCategory && secondBody.categoryBitMask == superBlockCategory) {
+        
+        [self gameOver];
+        
+    }
+    
+    if (firstBody.categoryBitMask == paddleCategory && secondBody.categoryBitMask == superBlockCategory) {
+        
+        [self gameOver];
+        
+    }
+    
+    if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == superBlockCategory) {
+        
+        [secondBody.node removeFromParent];
+        [ball.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
+
+       
+        for (SKNode* node in self.children) {
+            if ([node.name isEqual: blockCategoryName] || [node.name isEqual: superBlockCategoryName]) {
+                [node removeFromParent];
+            }
+        }
+    }
 }
 
 -(void)gameOver {
     
- /*   [self enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
-        
-        [NSObject cancelPreviousPerformRequestsWithTarget:node];
-        [node removeFromParent];
-        
-    }];*/
+    
+    [self.blockTimer invalidate];
+    [self.superBlockTimer invalidate];
     
     [[NSUserDefaults standardUserDefaults] setInteger:blocksHit forKey:@"lastGameScore"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -244,12 +298,12 @@ NSInteger blocksHit;
 
     /* Called before each frame is rendered */
     SKNode* ball2 = [self childNodeWithName: ballCategoryName];
-    static int maxSpeed = 1000;
+    static int maxSpeed = 800;
     float speed = sqrt(ball2.physicsBody.velocity.dx*ball2.physicsBody.velocity.dx + ball2.physicsBody.velocity.dy * ball2.physicsBody.velocity.dy);
    // NSLog(@"speed = %f",speed);
 
     if (speed > maxSpeed) {
-        ball2.physicsBody.linearDamping = 0.4f;
+        ball2.physicsBody.linearDamping = 0.8f;
     } else {
         ball2.physicsBody.linearDamping = 0.0f;
     }

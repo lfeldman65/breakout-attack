@@ -22,6 +22,8 @@
 		110E80BF1B16863700DF989C /* NSDataAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BB1B16863700DF989C /* NSDataAES256.m */; };
 		110E80C01B16863700DF989C /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BD1B16863700DF989C /* GameCenterManager.m */; };
 		110E80C31B168D0900DF989C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80C21B168D0900DF989C /* iAd.framework */; };
+		11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1BEF01B179AC200DF06A0 /* Shop.m */; };
+		11C1BEF41B179AF300DF06A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1BEF31B179AF300DF06A0 /* StoreKit.framework */; };
 		11E153CB1B16B25C00619239 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E153CA1B16B25C00619239 /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +63,9 @@
 		110E80BC1B16863700DF989C /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		110E80BD1B16863700DF989C /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		110E80C21B168D0900DF989C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		11C1BEF01B179AC200DF06A0 /* Shop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Shop.m; sourceTree = "<group>"; };
+		11C1BEF11B179AC200DF06A0 /* Shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shop.h; sourceTree = "<group>"; };
+		11C1BEF31B179AF300DF06A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		11E153C91B16B25C00619239 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		11E153CA1B16B25C00619239 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11C1BEF41B179AF300DF06A0 /* StoreKit.framework in Frameworks */,
 				110E80C31B168D0900DF989C /* iAd.framework in Frameworks */,
 				110E80B71B165AE600DF989C /* GameKit.framework in Frameworks */,
 			);
@@ -88,6 +94,7 @@
 		110E806A1B161B4000DF989C = {
 			isa = PBXGroup;
 			children = (
+				11C1BEF31B179AF300DF06A0 /* StoreKit.framework */,
 				110E80C21B168D0900DF989C /* iAd.framework */,
 				110E80751B161B4000DF989C /* Bowling */,
 				110E80941B161B4100DF989C /* BowlingTests */,
@@ -117,6 +124,8 @@
 				110E807E1B161B4100DF989C /* GameScene.m */,
 				11E153C91B16B25C00619239 /* SettingsViewController.h */,
 				11E153CA1B16B25C00619239 /* SettingsViewController.m */,
+				11C1BEF01B179AC200DF06A0 /* Shop.m */,
+				11C1BEF11B179AC200DF06A0 /* Shop.h */,
 				110E80801B161B4100DF989C /* GameScene.sks */,
 				110E80C11B16864300DF989C /* Game Center */,
 				110E80881B161B4100DF989C /* Images.xcassets */,
@@ -270,6 +279,7 @@
 			files = (
 				110E80841B161B4100DF989C /* GameViewController.m in Sources */,
 				110E807C1B161B4000DF989C /* AppDelegate.m in Sources */,
+				11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */,
 				11E153CB1B16B25C00619239 /* SettingsViewController.m in Sources */,
 				110E807F1B161B4100DF989C /* GameScene.m in Sources */,
 				110E80C01B16863700DF989C /* GameCenterManager.m in Sources */,

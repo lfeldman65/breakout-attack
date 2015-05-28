@@ -18,6 +18,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOption
 
 {
+    
+    [[SKPaymentQueue defaultQueue]addTransactionObserver:self];
+
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
                                                              [NSNumber numberWithBool:false], @"wasGameLaunched",
                                                              [NSNumber numberWithInt:0], @"highScore",
@@ -50,5 +53,56 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+    
+    for (SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStatePurchased: {
+                [self unlockFullVersion];
+                [[SKPaymentQueue defaultQueue]finishTransaction:transaction];
+            }
+                
+            case SKPaymentTransactionStatePurchasing: {
+                
+                break;
+                
+            }
+                
+            case SKPaymentTransactionStateRestored: {
+                
+                [self unlockFullVersion];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Full version successfully restored" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+                
+                break;
+            }
+                
+            case SKPaymentTransactionStateFailed: {
+                
+                NSLog(@"failure");
+                break;
+            }
+                
+                
+                
+            default:
+                break;
+                
+        }
+    }
+    
+    
+}
+
+- (void)unlockFullVersion {
+    
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"fullVersion"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
 
 @end

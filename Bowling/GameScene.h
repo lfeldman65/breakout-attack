@@ -11,6 +11,7 @@
 @interface GameScene : SKScene<SKPhysicsContactDelegate>
 
 @property (strong, nonatomic) NSTimer *blockTimer;
+@property (strong, nonatomic) NSTimer *superBlockTimer;
 @property (strong, nonatomic) SKSpriteNode *paddle;
 @property (strong, nonatomic) SKSpriteNode *ball;
 @property (strong, nonatomic) SKSpriteNode *block;
