@@ -206,7 +206,7 @@ int iAdHeight;
             [[NSUserDefaults standardUserDefaults] setInteger:lastGame forKey:@"highScore"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[GameCenterManager sharedManager] saveAndReportScore:(int)lastGame leaderboard:@"mostMonstersKilled1" sortOrder:GameCenterSortOrderHighToLow];
+            [[GameCenterManager sharedManager] saveAndReportScore:(int)lastGame leaderboard:@"assaultHighScore" sortOrder:GameCenterSortOrderHighToLow];
             
         }
         

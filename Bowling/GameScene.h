@@ -16,6 +16,9 @@
 @property (strong, nonatomic) SKSpriteNode *ball;
 @property (strong, nonatomic) SKSpriteNode *block;
 @property (strong, nonatomic) SKNode *bottom;
+@property (nonatomic) SKLabelNode *blocksHitLabel;
+@property (nonatomic) SKLabelNode *livesLabel;
+
 
 
 

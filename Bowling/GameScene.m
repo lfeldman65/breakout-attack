@@ -36,80 +36,113 @@ static const uint32_t superBlockCategory = 0x1 << 4;
 @synthesize bottom;
 
 NSInteger blocksHit;
+int livesRemaining;
 
 -(id)initWithSize:(CGSize)size {
     
     if (self = [super initWithSize:size]) {
         
+        blocksHit = 0;
+        livesRemaining = 3;
+        [self resetGame];
+    
+    }
+    return self;
+}
+
+-(void)resetGame {
+    
+    [self enumerateChildNodesWithName:@"*" usingBlock:^(SKNode *node, BOOL *stop) {
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:node];
+        [node removeFromParent];
+        
+    }];
+    
     //    SKSpriteNode* background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.png"];
     //    background.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
     //    [self addChild:background];
-        NSLog(@"init");
-        blocksHit = 0;
-        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
-        
-         self.superBlockTimer = [NSTimer scheduledTimerWithTimeInterval:13.0 target:self selector:@selector(addSuperBlock) userInfo:nil repeats:YES];
-        
-        self.physicsWorld.gravity = CGVectorMake(0.0f, -1.0f);
-        
-        // 1 Create an physics body that borders the screen
-        SKPhysicsBody* borderBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
-        // 2 Set physicsBody of scene to borderBody
-        self.physicsBody = borderBody;
-        // 3 Set the friction of that physicsBody to 0
-        self.physicsBody.friction = 0.0f;
-        
-        // 1
-        ball = [SKSpriteNode spriteNodeWithImageNamed: @"ball.png"];
-        ball.name = ballCategoryName;
-        ball.position = CGPointMake(0.5*self.frame.size.width, 0.7*self.frame.size.height);
-        [self addChild:ball];
-        
-        // 2
-        ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:ball.frame.size.width/2];
-        // 3
-        ball.physicsBody.friction = 0.0f;
-        // 4
-        ball.physicsBody.restitution = 1.1f;
-        // 5
-        ball.physicsBody.linearDamping = 0.0f;
-        // 6
-        ball.physicsBody.allowsRotation = NO;
-        
-        ball.physicsBody.affectedByGravity = YES;
-        
-        
-        // To do: random impulse vector
-        
-        [ball.physicsBody applyImpulse:CGVectorMake(5.0f, 15.0f)];
-        
-        paddle = [[SKSpriteNode alloc] initWithImageNamed: @"paddle.png"];
-        paddle.name = paddleCategoryName;
-        paddle.position = CGPointMake(CGRectGetMidX(self.frame), paddle.frame.size.height * 0.8f);
-        [self addChild:paddle];
-        paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.frame.size];
-        paddle.physicsBody.restitution = 0.1f;
-        paddle.physicsBody.friction = 0.4f;
-        
-        // make paddle static
-        paddle.physicsBody.dynamic = NO;
-        
-        CGRect bottomRect = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
-        bottom = [SKNode node];
-        bottom.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:bottomRect];
-        [self addChild:bottom];
-        
-        bottom.physicsBody.categoryBitMask = bottomCategory;
-        ball.physicsBody.categoryBitMask = ballCategory;
-        paddle.physicsBody.categoryBitMask = paddleCategory;
+    
+    self.blocksHitLabel = [SKLabelNode labelNodeWithFontNamed:@"Papyrus"];
+    self.blocksHitLabel.position = CGPointMake(.2*self.frame.size.width, .90*self.frame.size.height);
+    self.blocksHitLabel.fontColor = [UIColor redColor];
+    self.blocksHitLabel.fontSize = .04*self.frame.size.width;
+    self.blocksHitLabel.zPosition = 1;
+    [self addChild:self.blocksHitLabel];
+    NSString *blockString = [NSString stringWithFormat:@"Blocks Detroyed: %li", (long)blocksHit];
+    self.blocksHitLabel.text = blockString;
+    
+    self.livesLabel = [SKLabelNode labelNodeWithFontNamed:@"Papyrus"];
+    self.livesLabel.position = CGPointMake(.8*self.frame.size.width, .90*self.frame.size.height);
+    self.livesLabel.fontColor = [UIColor redColor];
+    self.livesLabel.fontSize = .04*self.frame.size.width;
+    self.livesLabel.zPosition = 1;
+    [self addChild:self.livesLabel];
+    NSString *livesString = [NSString stringWithFormat:@"Lives: %i", livesRemaining];
+    self.livesLabel.text = livesString;
 
-        ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory;
-        
-        self.physicsWorld.contactDelegate = self;
-        [self addRowOfBlocks];
+    self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
+    
+    self.superBlockTimer = [NSTimer scheduledTimerWithTimeInterval:13.0 target:self selector:@selector(addSuperBlock) userInfo:nil repeats:YES];
+    
+    self.physicsWorld.gravity = CGVectorMake(0.0f, -1.0f);
+    
+    // 1 Create an physics body that borders the screen
+    SKPhysicsBody* borderBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+    // 2 Set physicsBody of scene to borderBody
+    self.physicsBody = borderBody;
+    // 3 Set the friction of that physicsBody to 0
+    self.physicsBody.friction = 0.0f;
+    
+    // 1
+    ball = [SKSpriteNode spriteNodeWithImageNamed: @"ball.png"];
+    ball.name = ballCategoryName;
+    ball.position = CGPointMake(0.5*self.frame.size.width, 0.7*self.frame.size.height);
+    [self addChild:ball];
+    
+    // 2
+    ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:ball.frame.size.width/2];
+    // 3
+    ball.physicsBody.friction = 0.0f;
+    // 4
+    ball.physicsBody.restitution = 1.1f;
+    // 5
+    ball.physicsBody.linearDamping = 0.0f;
+    // 6
+    ball.physicsBody.allowsRotation = NO;
+    
+    ball.physicsBody.affectedByGravity = YES;
+    
+    
+    // To do: random impulse vector
+    
+    [ball.physicsBody applyImpulse:CGVectorMake(5.0f, 15.0f)];
+    
+    paddle = [[SKSpriteNode alloc] initWithImageNamed: @"paddle.png"];
+    paddle.name = paddleCategoryName;
+    paddle.position = CGPointMake(CGRectGetMidX(self.frame), 2*paddle.frame.size.height);
+    [self addChild:paddle];
+    paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.frame.size];
+    paddle.physicsBody.restitution = 0.1f;
+    paddle.physicsBody.friction = 0.4f;
+    
+    // make paddle static
+    paddle.physicsBody.dynamic = NO;
+    
+    CGRect bottomRect = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
+    bottom = [SKNode node];
+    bottom.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:bottomRect];
+    [self addChild:bottom];
+    
+    bottom.physicsBody.categoryBitMask = bottomCategory;
+    ball.physicsBody.categoryBitMask = ballCategory;
+    paddle.physicsBody.categoryBitMask = paddleCategory;
+    
+    ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory;
+    
+    self.physicsWorld.contactDelegate = self;
+    [self addRowOfBlocks];
 
-    }
-    return self;
 }
 
 -(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
@@ -118,7 +151,7 @@ NSInteger blocksHit;
     
     UITouch* touch = [touches anyObject];
     CGPoint touchLocation = [touch locationInNode:self];
-     
+    
     SKPhysicsBody *body = [self.physicsWorld bodyAtPoint:touchLocation];
     if (body && [body.node.name isEqualToString: paddleCategoryName]) {
   //  NSLog(@"Began touch on paddle");
@@ -128,7 +161,6 @@ NSInteger blocksHit;
 }
 
 -(void)addSuperBlock {
-    
     
     SKSpriteNode *superBlock = [SKSpriteNode spriteNodeWithImageNamed:@"paddle.png"];
     
@@ -178,7 +210,7 @@ NSInteger blocksHit;
 
 -(void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
     // 1 Check whether user tapped paddle
-    if (self.isFingerOnPaddle) {
+  //  if (self.isFingerOnPaddle) {                  // finger doesn't need to be on paddle
      // 2 Get touch location
      UITouch* touch = [touches anyObject];
      CGPoint touchLocation = [touch locationInNode:self];
@@ -192,17 +224,18 @@ NSInteger blocksHit;
      paddleX = MIN(paddleX, self.size.width - paddle2.size.width/2);
      // 6 Update position of paddle
      paddle2.position = CGPointMake(paddleX, paddle2.position.y);
-     }
+  //   }
 }
 
 -(void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
+    
      self.isFingerOnPaddle = NO;
 
 }
 
 - (void)didBeginContact:(SKPhysicsContact*)contact {
     
-    NSLog(@"collision");
+  //  NSLog(@"collision");
     // 1 Create local variables for two physics bodies
     SKPhysicsBody* firstBody;
     SKPhysicsBody* secondBody;
@@ -217,38 +250,39 @@ NSInteger blocksHit;
 
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == bottomCategory) {
 
-        [self gameOver];
-        
+        [self lifeLost];
     }
     
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == blockCategory) {
         [secondBody.node removeFromParent];
         blocksHit++;
+        NSString *blockString = [NSString stringWithFormat:@"Blocks Destroyed: %li", (long)blocksHit];
+        self.blocksHitLabel.text = blockString;
         [ball.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
 
     }
     
     if (firstBody.categoryBitMask == bottomCategory && secondBody.categoryBitMask == blockCategory) {
 
-        [self gameOver];
+        [self lifeLost];
         
     }
     
     if (firstBody.categoryBitMask == blockCategory && secondBody.categoryBitMask == paddleCategory) {
         
-        [self gameOver];
+        [self lifeLost];
         
     }
     
     if (firstBody.categoryBitMask == bottomCategory && secondBody.categoryBitMask == superBlockCategory) {
         
-        [self gameOver];
+        [self lifeLost];
         
     }
     
     if (firstBody.categoryBitMask == paddleCategory && secondBody.categoryBitMask == superBlockCategory) {
         
-        [self gameOver];
+        [self lifeLost];
         
     }
     
@@ -257,7 +291,6 @@ NSInteger blocksHit;
         [secondBody.node removeFromParent];
         [ball.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
 
-       
         for (SKNode* node in self.children) {
             if ([node.name isEqual: blockCategoryName] || [node.name isEqual: superBlockCategoryName]) {
                 [node removeFromParent];
@@ -266,11 +299,31 @@ NSInteger blocksHit;
     }
 }
 
--(void)gameOver {
-    
+-(void)lifeLost {
     
     [self.blockTimer invalidate];
     [self.superBlockTimer invalidate];
+    livesRemaining = livesRemaining - 1;
+    NSLog(@"lives = %i", livesRemaining);
+    
+    NSString *livesString = [NSString stringWithFormat:@"Lives: %i", livesRemaining];
+    self.livesLabel.text = livesString;
+    
+    if(livesRemaining<=0) {
+        
+        [self gameOver];
+    }
+    else {
+        
+        [self resetGame];
+
+    }
+}
+
+-(void)gameOver {
+    
+    
+    [self.ball removeFromParent];
     
     [[NSUserDefaults standardUserDefaults] setInteger:blocksHit forKey:@"lastGameScore"];
     [[NSUserDefaults standardUserDefaults] synchronize];
