@@ -17,7 +17,12 @@
 		110E808C1B161B4100DF989C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 110E808A1B161B4100DF989C /* LaunchScreen.xib */; };
 		110E80981B161B4100DF989C /* BowlingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80971B161B4100DF989C /* BowlingTests.m */; };
 		110E80A21B161DBB00DF989C /* assets.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 110E80A11B161DBA00DF989C /* assets.atlas */; };
-		110E80A81B16363200DF989C /* HomeScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80A71B16363200DF989C /* HomeScene.m */; };
+		110E80B71B165AE600DF989C /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80B61B165AE600DF989C /* GameKit.framework */; };
+		110E80BE1B16863700DF989C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80B81B16863700DF989C /* Reachability.m */; };
+		110E80BF1B16863700DF989C /* NSDataAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BB1B16863700DF989C /* NSDataAES256.m */; };
+		110E80C01B16863700DF989C /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BD1B16863700DF989C /* GameCenterManager.m */; };
+		110E80C31B168D0900DF989C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80C21B168D0900DF989C /* iAd.framework */; };
+		11E153CB1B16B25C00619239 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E153CA1B16B25C00619239 /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,8 +53,16 @@
 		110E80961B161B4100DF989C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		110E80971B161B4100DF989C /* BowlingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BowlingTests.m; sourceTree = "<group>"; };
 		110E80A11B161DBA00DF989C /* assets.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = assets.atlas; sourceTree = "<group>"; };
-		110E80A61B16363200DF989C /* HomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
-		110E80A71B16363200DF989C /* HomeScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeScene.m; sourceTree = "<group>"; };
+		110E80B61B165AE600DF989C /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		110E80B81B16863700DF989C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		110E80B91B16863700DF989C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		110E80BA1B16863700DF989C /* NSDataAES256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAES256.h; sourceTree = "<group>"; };
+		110E80BB1B16863700DF989C /* NSDataAES256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAES256.m; sourceTree = "<group>"; };
+		110E80BC1B16863700DF989C /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
+		110E80BD1B16863700DF989C /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
+		110E80C21B168D0900DF989C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		11E153C91B16B25C00619239 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		11E153CA1B16B25C00619239 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110E80C31B168D0900DF989C /* iAd.framework in Frameworks */,
+				110E80B71B165AE600DF989C /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +88,7 @@
 		110E806A1B161B4000DF989C = {
 			isa = PBXGroup;
 			children = (
+				110E80C21B168D0900DF989C /* iAd.framework */,
 				110E80751B161B4000DF989C /* Bowling */,
 				110E80941B161B4100DF989C /* BowlingTests */,
 				110E80741B161B4000DF989C /* Products */,
@@ -94,14 +110,15 @@
 				110E80A11B161DBA00DF989C /* assets.atlas */,
 				110E807A1B161B4000DF989C /* AppDelegate.h */,
 				110E807B1B161B4000DF989C /* AppDelegate.m */,
+				110E80851B161B4100DF989C /* Main.storyboard */,
 				110E80821B161B4100DF989C /* GameViewController.h */,
 				110E80831B161B4100DF989C /* GameViewController.m */,
-				110E80A61B16363200DF989C /* HomeScene.h */,
-				110E80A71B16363200DF989C /* HomeScene.m */,
 				110E807D1B161B4100DF989C /* GameScene.h */,
 				110E807E1B161B4100DF989C /* GameScene.m */,
-				110E80851B161B4100DF989C /* Main.storyboard */,
+				11E153C91B16B25C00619239 /* SettingsViewController.h */,
+				11E153CA1B16B25C00619239 /* SettingsViewController.m */,
 				110E80801B161B4100DF989C /* GameScene.sks */,
+				110E80C11B16864300DF989C /* Game Center */,
 				110E80881B161B4100DF989C /* Images.xcassets */,
 				110E808A1B161B4100DF989C /* LaunchScreen.xib */,
 				110E80761B161B4000DF989C /* Supporting Files */,
@@ -112,6 +129,7 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				110E80B61B165AE600DF989C /* GameKit.framework */,
 				110E80771B161B4000DF989C /* Info.plist */,
 				110E80781B161B4000DF989C /* main.m */,
 			);
@@ -133,6 +151,19 @@
 				110E80961B161B4100DF989C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		110E80C11B16864300DF989C /* Game Center */ = {
+			isa = PBXGroup;
+			children = (
+				110E80B81B16863700DF989C /* Reachability.m */,
+				110E80B91B16863700DF989C /* Reachability.h */,
+				110E80BA1B16863700DF989C /* NSDataAES256.h */,
+				110E80BB1B16863700DF989C /* NSDataAES256.m */,
+				110E80BC1B16863700DF989C /* GameCenterManager.h */,
+				110E80BD1B16863700DF989C /* GameCenterManager.m */,
+			);
+			name = "Game Center";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,10 +268,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				110E80A81B16363200DF989C /* HomeScene.m in Sources */,
 				110E80841B161B4100DF989C /* GameViewController.m in Sources */,
 				110E807C1B161B4000DF989C /* AppDelegate.m in Sources */,
+				11E153CB1B16B25C00619239 /* SettingsViewController.m in Sources */,
 				110E807F1B161B4100DF989C /* GameScene.m in Sources */,
+				110E80C01B16863700DF989C /* GameCenterManager.m in Sources */,
+				110E80BE1B16863700DF989C /* Reachability.m in Sources */,
+				110E80BF1B16863700DF989C /* NSDataAES256.m in Sources */,
 				110E80791B161B4000DF989C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,6 +472,7 @@
 				110E809D1B161B4100DF989C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		110E809E1B161B4100DF989C /* Build configuration list for PBXNativeTarget "BowlingTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +481,7 @@
 				110E80A01B161B4100DF989C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
