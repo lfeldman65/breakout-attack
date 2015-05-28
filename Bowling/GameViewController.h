@@ -9,7 +9,7 @@
 #import "SettingsViewController.h"
 
 
-@interface GameViewController : UIViewController <GameCenterManagerDelegate, ADBannerViewDelegate>
+@interface GameViewController : UIViewController <GameCenterManagerDelegate, ADBannerViewDelegate, SettingsDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;

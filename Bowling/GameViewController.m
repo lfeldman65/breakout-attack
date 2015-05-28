@@ -106,12 +106,6 @@ int iAdHeight;
     if (!self.skView.scene) {
         self.skView.showsFPS = NO;
         self.skView.showsNodeCount = NO;
-        
-        // Create and configure the scene.
-
-        self.scene = [[GameScene alloc] initWithSize:self.skView.bounds.size];
-        self.scene.scaleMode = SKSceneScaleModeAspectFill;
-
     }
     
     [self.lastGameLabel setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
@@ -130,11 +124,11 @@ int iAdHeight;
     self.startButton.center = CGPointMake(.9*[UIScreen mainScreen].bounds.size.width, .1*[UIScreen mainScreen].bounds.size.height);
     self.startButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
     
-/*    [self.imageView setFrame:CGRectMake(0, 0, .42*[UIScreen mainScreen].bounds.size.width, .42*[UIScreen mainScreen].bounds.size.width)];
+    [self.imageView setFrame:CGRectMake(0, 0, .42*[UIScreen mainScreen].bounds.size.width, .42*[UIScreen mainScreen].bounds.size.width)];
     self.imageView.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .53*[UIScreen mainScreen].bounds.size.height);
     
     [self.bgImage setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    self.bgImage.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .5*[UIScreen mainScreen].bounds.size.height);*/
+    self.bgImage.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .5*[UIScreen mainScreen].bounds.size.height);
     
     [self.webAddress setFrame:CGRectMake(0, 0, .5*[UIScreen mainScreen].bounds.size.width, 50)];
     self.webAddress.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
@@ -168,6 +162,7 @@ int iAdHeight;
                                                object:nil];
     
     self.scene = [[GameScene alloc] initWithSize:self.skView.bounds.size];
+    self.scene.scaleMode = SKSceneScaleModeAspectFill;
     [self.skView presentScene:self.scene];
     
 }
@@ -260,6 +255,25 @@ int iAdHeight;
         }
     }
 }
+
+-(void)settingsDidFinish:(SettingsViewController *)controller {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+        self.iAdOutlet.hidden = YES;
+    }
+    
+}
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"toSettings"]){
+        SettingsViewController *svc = (SettingsViewController *)[segue destinationViewController];
+        svc.delegate = self;
+    }
+    
+}
+
 
 
 # pragma mark - Game Center

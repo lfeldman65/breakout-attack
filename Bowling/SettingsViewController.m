@@ -17,12 +17,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *soundLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *soundSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *gcButton;
-@property (weak, nonatomic) IBOutlet UIButton *ammoButton;
+@property (weak, nonatomic) IBOutlet UIButton *fullButton;
 //@property (nonatomic) Shop *ourNewShop;
 
 - (IBAction)soundSwitched:(id)sender;
 - (IBAction)gameCenterPressed:(id)sender;
-- (IBAction)ammoPressed:(id)sender;
+- (IBAction)fullVersionPressed:(id)sender;
 
 @end
 
@@ -52,9 +52,9 @@
     self.textView.font = [UIFont fontWithName: @"Papyrus" size: .032*[UIScreen mainScreen].bounds.size.width];
     self.textView.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .5*[UIScreen mainScreen].bounds.size.height);
     
-    [self.ammoButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.ammoButton.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .9*[UIScreen mainScreen].bounds.size.height);
-    self.ammoButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
+    [self.fullButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
+    self.fullButton.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .9*[UIScreen mainScreen].bounds.size.height);
+    self.fullButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
         
@@ -69,7 +69,7 @@
 
 - (IBAction)backPressed:(id)sender {
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate settingsDidFinish:self];
 }
 
 
@@ -108,7 +108,7 @@
     
 }
 
-- (IBAction)ammoPressed:(id)sender {
+- (IBAction)fullVersionPressed:(id)sender {
     
     // instantiate
     

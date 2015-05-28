@@ -15,8 +15,19 @@
 #import "GameCenterManager.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+
+@class SettingsViewController;
+
+@protocol SettingsDelegate
+
+- (void)settingsDidFinish:(SettingsViewController *) controller;
+
+@end
+
+
 @interface SettingsViewController : UIViewController
 
+@property (weak, nonatomic) id <SettingsDelegate> delegate;
 
 
 @end
