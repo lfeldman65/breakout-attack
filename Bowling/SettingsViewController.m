@@ -32,28 +32,31 @@
 {
     [super viewWillLayoutSubviews];
     
-    [self.backButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 75)];
-    self.backButton.center = CGPointMake(.16*[UIScreen mainScreen].bounds.size.width, .12*[UIScreen mainScreen].bounds.size.height);
-    self.backButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
+    float sWidth = [UIScreen mainScreen].bounds.size.width;
+    float sHeight = [UIScreen mainScreen].bounds.size.height;
     
-    [self.soundLabel setFrame:CGRectMake(0, 0, .15*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.soundLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
-    self.soundLabel.center = CGPointMake(.43*[UIScreen mainScreen].bounds.size.width, .12*[UIScreen mainScreen].bounds.size.height);
+    [self.backButton setFrame:CGRectMake(0, 0, .3*sWidth, .1*sHeight)];
+    self.backButton.center = CGPointMake(.11*sWidth, .11*sHeight);
+    self.backButton.titleLabel.font = [UIFont fontWithName: @"Noteworthy" size: .06*[UIScreen mainScreen].bounds.size.width];
     
-    [self.soundSwitch setFrame:CGRectMake(0, 0, 51, 31)];
-    self.soundSwitch.center = CGPointMake(.56*[UIScreen mainScreen].bounds.size.width, .11*[UIScreen mainScreen].bounds.size.height);
+    [self.soundLabel setFrame:CGRectMake(.6*sWidth, .06*sHeight, .23*sWidth, .1*sHeight)];
+    [[self soundLabel] setFont:[UIFont fontWithName:@"Noteworthy" size:.05*sWidth]];
     
-    [self.gcButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.gcButton.center = CGPointMake(.82*[UIScreen mainScreen].bounds.size.width, .12*[UIScreen mainScreen].bounds.size.height);
-    self.gcButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
+    [self.soundSwitch setFrame:CGRectMake(.79*sWidth, .083*sHeight, .23*sWidth, .1*sHeight)];
+    
+    [self.gcButton setFrame:CGRectMake(0, 0, sWidth/2, .1*sHeight)];
+    self.gcButton.center = CGPointMake(sWidth/2, .76*sHeight);
+    [self.gcButton.titleLabel setFont:[UIFont systemFontOfSize:.06*sWidth]];
+    self.gcButton.layer.cornerRadius = .3*self.gcButton.layer.frame.size.height;
+    self.gcButton.layer.masksToBounds = YES;
     
     [self.textView setFrame:CGRectMake(0, 0, .91*[UIScreen mainScreen].bounds.size.width, .62*[UIScreen mainScreen].bounds.size.height)];
-    self.textView.font = [UIFont fontWithName: @"Papyrus" size: .032*[UIScreen mainScreen].bounds.size.width];
+    self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .04*[UIScreen mainScreen].bounds.size.width];
     self.textView.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .5*[UIScreen mainScreen].bounds.size.height);
     
     [self.fullButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
     self.fullButton.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .9*[UIScreen mainScreen].bounds.size.height);
-    self.fullButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .04*[UIScreen mainScreen].bounds.size.width];
+    self.fullButton.titleLabel.font = [UIFont fontWithName: @"Noteworthy" size: .07*[UIScreen mainScreen].bounds.size.width];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
         

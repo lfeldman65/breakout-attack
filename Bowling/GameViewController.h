@@ -23,6 +23,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lastGameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *highScoreLabel;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+
 @property (strong, nonatomic) NSURL *backgroundMusicURL;
 @property (strong, nonatomic) NSURL *eatURL;
 @property (weak, nonatomic) IBOutlet ADBannerView *iAdOutlet;

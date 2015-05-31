@@ -24,6 +24,8 @@
 		110E80C31B168D0900DF989C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80C21B168D0900DF989C /* iAd.framework */; };
 		11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1BEF01B179AC200DF06A0 /* Shop.m */; };
 		11C1BEF41B179AF300DF06A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1BEF31B179AF300DF06A0 /* StoreKit.framework */; };
+		11C1BEF71B17E7C400DF06A0 /* gamecenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C1BEF51B17E7C300DF06A0 /* gamecenter.png */; };
+		11C1BEF81B17E7C400DF06A0 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C1BEF61B17E7C400DF06A0 /* gear.png */; };
 		11E153CB1B16B25C00619239 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E153CA1B16B25C00619239 /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +68,8 @@
 		11C1BEF01B179AC200DF06A0 /* Shop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Shop.m; sourceTree = "<group>"; };
 		11C1BEF11B179AC200DF06A0 /* Shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shop.h; sourceTree = "<group>"; };
 		11C1BEF31B179AF300DF06A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		11C1BEF51B17E7C300DF06A0 /* gamecenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gamecenter.png; sourceTree = "<group>"; };
+		11C1BEF61B17E7C400DF06A0 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
 		11E153C91B16B25C00619239 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		11E153CA1B16B25C00619239 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +131,7 @@
 				11C1BEF01B179AC200DF06A0 /* Shop.m */,
 				11C1BEF11B179AC200DF06A0 /* Shop.h */,
 				110E80801B161B4100DF989C /* GameScene.sks */,
+				11C1BEF91B17E7CA00DF06A0 /* Images */,
 				110E80C11B16864300DF989C /* Game Center */,
 				110E80881B161B4100DF989C /* Images.xcassets */,
 				110E808A1B161B4100DF989C /* LaunchScreen.xib */,
@@ -173,6 +178,15 @@
 				110E80BD1B16863700DF989C /* GameCenterManager.m */,
 			);
 			name = "Game Center";
+			sourceTree = "<group>";
+		};
+		11C1BEF91B17E7CA00DF06A0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				11C1BEF51B17E7C300DF06A0 /* gamecenter.png */,
+				11C1BEF61B17E7C400DF06A0 /* gear.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,9 +270,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				110E808C1B161B4100DF989C /* LaunchScreen.xib in Resources */,
+				11C1BEF81B17E7C400DF06A0 /* gear.png in Resources */,
 				110E80891B161B4100DF989C /* Images.xcassets in Resources */,
 				110E80811B161B4100DF989C /* GameScene.sks in Resources */,
 				110E80A21B161DBB00DF989C /* assets.atlas in Resources */,
+				11C1BEF71B17E7C400DF06A0 /* gamecenter.png in Resources */,
 				110E80871B161B4100DF989C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

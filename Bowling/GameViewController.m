@@ -68,9 +68,9 @@ int iAdHeight;
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wasGameLaunched"]) {
         
-        NSString *infoString = @"If you dare to enter the house of terror, heed my advice. Read the instructions on the Settings screen before attempting to battle the beasts within.";
+        NSString *infoString = @"Block Assault is the love child of Space Invaders and Breakout. Please go to the Settings screen to read the full instructions.";
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Not for the Faint of Heart" message:infoString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Welcome!" message:infoString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"wasGameLaunched"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -101,51 +101,61 @@ int iAdHeight;
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
+    float sWidth = [UIScreen mainScreen].bounds.size.width;    // 4S: width = 320
+    float sHeight = [UIScreen mainScreen].bounds.size.height;  // 4S: height = 480
+    
+    [self.bgImage setFrame:CGRectMake(0, 0, sWidth, sHeight)];
+    self.bgImage.center = CGPointMake(sWidth/2, sHeight/2);
+    
+    [self.settingsButton setFrame:CGRectMake(0, 0, .1*sWidth, .1*sWidth)];
+    self.settingsButton.center = CGPointMake(.9*sWidth, 0.12*sHeight);
+    
+    [self.titleLabel setFrame:CGRectMake(0, 0, sWidth, .09*sHeight)];
+    [[self titleLabel] setFont:[UIFont fontWithName:@"Noteworthy" size:.11*sWidth]];
+    self.titleLabel.center = CGPointMake(.5*sWidth, .23*sHeight);
+
+    [self.lastGameLabel setFrame:CGRectMake(0, 0, .5*sWidth, 50)];
+    self.lastGameLabel.font = [UIFont fontWithName: @"Noteworthy" size: .07*sWidth];
+    self.lastGameLabel.center = CGPointMake(.5*sWidth, .4*sHeight);
+    
+    [self.highScoreLabel setFrame:CGRectMake(0, 0, .5*sWidth, 50)];
+    self.highScoreLabel.font = [UIFont fontWithName: @"Noteworthy" size: .07*sWidth];
+    self.highScoreLabel.center = CGPointMake(.5*sWidth, .6*sHeight);
+    
+    [self.startButton setFrame:CGRectMake(0, 0, sWidth, .1*sWidth)];
+    self.startButton.titleLabel.font = [UIFont fontWithName: @"Noteworthy" size: .09*sWidth];
+    self.startButton.center = CGPointMake(.5*sWidth, .8*sHeight);
+    
+    [self.imageView setFrame:CGRectMake(0, 0, .42*sWidth, .42*sWidth)];
+    self.imageView.center = CGPointMake(.5*sWidth, .53*sHeight);
+    
+    [self.bgImage setFrame:CGRectMake(0, 0, sWidth, sHeight)];
+    self.bgImage.center = CGPointMake(.5*sWidth, .5*sHeight);
+    
+    [self.webAddress setFrame:CGRectMake(0, 0, sWidth, .1*sWidth)];
+    self.webAddress.font = [UIFont fontWithName: @"Noteworthy" size: .06*sWidth];
+    self.webAddress.center = CGPointMake(sWidth/2, .96*sHeight);
+    
+    [self.iAdOutlet setFrame:CGRectMake(0, sHeight - iAdHeight, sWidth, iAdHeight)];
+    
+
+}
+
+- (IBAction)startPressed:(id)sender {
+        
     // Configure the view.
+    
     self.skView = (SKView *)self.view;
     if (!self.skView.scene) {
         self.skView.showsFPS = NO;
         self.skView.showsNodeCount = NO;
     }
     
-    [self.lastGameLabel setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.lastGameLabel.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
-    self.lastGameLabel.center = CGPointMake(.34*[UIScreen mainScreen].bounds.size.width, .1*[UIScreen mainScreen].bounds.size.height);
-    
-    [self.highScoreLabel setFrame:CGRectMake(0, 0, .35*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.highScoreLabel.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
-    self.highScoreLabel.center = CGPointMake(.66*[UIScreen mainScreen].bounds.size.width, .1*[UIScreen mainScreen].bounds.size.height);
-    
-    [self.settingsButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 75)];
-    self.settingsButton.center = CGPointMake(.1*[UIScreen mainScreen].bounds.size.width, .1*[UIScreen mainScreen].bounds.size.height);
-    self.settingsButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
-    
-    [self.startButton setFrame:CGRectMake(0, 0, .3*[UIScreen mainScreen].bounds.size.width, 75)];
-    self.startButton.center = CGPointMake(.9*[UIScreen mainScreen].bounds.size.width, .1*[UIScreen mainScreen].bounds.size.height);
-    self.startButton.titleLabel.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
-    
-    [self.imageView setFrame:CGRectMake(0, 0, .42*[UIScreen mainScreen].bounds.size.width, .42*[UIScreen mainScreen].bounds.size.width)];
-    self.imageView.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .53*[UIScreen mainScreen].bounds.size.height);
-    
-    [self.bgImage setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    self.bgImage.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .5*[UIScreen mainScreen].bounds.size.height);
-    
-    [self.webAddress setFrame:CGRectMake(0, 0, .5*[UIScreen mainScreen].bounds.size.width, 50)];
-    self.webAddress.font = [UIFont fontWithName: @"Papyrus" size: .03*[UIScreen mainScreen].bounds.size.width];
-    self.webAddress.center = CGPointMake(.5*[UIScreen mainScreen].bounds.size.width, .94*[UIScreen mainScreen].bounds.size.height);
-    
-    [self.iAdOutlet setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - iAdHeight, [UIScreen mainScreen].bounds.size.width, iAdHeight)];
-
-}
-
-- (IBAction)startPressed:(id)sender {
-    
-    // Present the scene.
-    
     self.startButton.hidden = YES;
     self.settingsButton.hidden = YES;
     self.imageView.hidden = YES;
     self.highScoreLabel.hidden = YES;
+    self.titleLabel.hidden = YES;
     self.lastGameLabel.hidden = YES;
     self.bgImage.hidden = YES;
     self.iAdOutlet.hidden = YES;
@@ -172,9 +182,12 @@ int iAdHeight;
     
     if ([[notification name] isEqualToString:@"gameOverNotification"]) {
         
-        NSLog(@"game over");
+        [self.scene removeFromParent];
+        [self.skView presentScene:nil];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self];
+        
+        NSLog(@"game over");
         
         self.startButton.hidden = NO;
         self.settingsButton.hidden = NO;
@@ -184,9 +197,16 @@ int iAdHeight;
         
         self.imageView.hidden = NO;
         self.highScoreLabel.hidden = NO;
+        self.titleLabel.hidden = NO;
         self.lastGameLabel.hidden = NO;
         self.bgImage.hidden = NO;
-        self.iAdOutlet.hidden = NO;
+        
+        if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+            self.iAdOutlet.hidden = YES;
+        } else {
+            self.iAdOutlet.hidden = NO;
+        }
+        
         self.webAddress.hidden = NO;
         
         NSInteger lastGame = [[NSUserDefaults standardUserDefaults] integerForKey:@"lastGameScore"];
