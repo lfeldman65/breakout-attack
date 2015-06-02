@@ -18,9 +18,9 @@
 @property (strong, nonatomic) SKNode *bottom;
 @property (nonatomic) SKLabelNode *blocksHitLabel;
 @property (nonatomic) SKLabelNode *livesLabel;
-
-
-
+@property (nonatomic) NSString *paddleString;
+@property (nonatomic) NSString *blockString;
+@property (nonatomic) NSString *superBlockString;
 
 
 @end

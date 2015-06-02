@@ -17,6 +17,12 @@ int iAdHeight;
     
     [super viewDidLoad];
     
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+        self.iAdOutlet.hidden = YES;
+    } else {
+        self.iAdOutlet.hidden = NO;
+    }
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         
         iAdHeight = 66;
@@ -64,7 +70,6 @@ int iAdHeight;
                                              selector:@selector(soundChanged:)
                                                  name:@"soundDidChange"
                                                object:nil];
-    
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wasGameLaunched"]) {
         
@@ -141,6 +146,47 @@ int iAdHeight;
 
 }
 
+- (void)shoppingDone:(NSNotification *)notification {
+    
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+        self.iAdOutlet.hidden = YES;
+    } else {
+        self.iAdOutlet.hidden = NO;
+    }
+    
+}
+
+- (Shop *)ourNewShop {
+    
+    if (!_ourNewShop) {
+        _ourNewShop = [[Shop alloc] init];
+        _ourNewShop.delegate = self;
+    }
+    return _ourNewShop;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0: {
+            [self.ourNewShop makeThePurchase];
+            break;
+            
+        }
+            
+        case 1: {
+            [self.ourNewShop restoreThePurchase];
+            break;
+            
+        }
+            
+        default: {
+            break;
+        }
+    }
+}
+
+
 - (IBAction)startPressed:(id)sender {
         
     // Configure the view.
@@ -216,6 +262,12 @@ int iAdHeight;
         NSString *lastGameString = [NSString stringWithFormat:@"Last Game: %ld", (long)lastGame];
         self.lastGameLabel.text = lastGameString;
         
+        NSInteger numGames = [[NSUserDefaults standardUserDefaults] integerForKey:@"numberGames"];
+        numGames++;
+        
+        [[NSUserDefaults standardUserDefaults] setInteger:numGames forKey:@"numberGames"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         NSInteger best = [[NSUserDefaults standardUserDefaults] integerForKey:@"highScore"];
         
         if (lastGame > best) {
@@ -230,20 +282,16 @@ int iAdHeight;
             
         }
         
-        if (lastGame > 100 && lastGame <= 250) {
-            [[GameCenterManager sharedManager] saveAndReportAchievement:@"100Monsters" percentComplete:100 shouldDisplayNotification:YES];
+        if (lastGame >=5 && lastGame < 10) {
+            [[GameCenterManager sharedManager] saveAndReportAchievement:@"50blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
-        if (lastGame > 250 && lastGame <= 500) {
-            [[GameCenterManager sharedManager] saveAndReportAchievement:@"250Monsters" percentComplete:100 shouldDisplayNotification:YES];  // achievement name is wrong.
+        if (lastGame >= 10 && lastGame < 25) {
+            [[GameCenterManager sharedManager] saveAndReportAchievement:@"100blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
-        if (lastGame > 500 && lastGame <= 1000) {
-            [[GameCenterManager sharedManager] saveAndReportAchievement:@"500Monsters" percentComplete:100 shouldDisplayNotification:YES];
-        }
-        
-        if (lastGame > 1000) {
-            [[GameCenterManager sharedManager] saveAndReportAchievement:@"1000Monsters" percentComplete:100 shouldDisplayNotification:YES];
+        if (lastGame >= 25) {
+            [[GameCenterManager sharedManager] saveAndReportAchievement:@"250blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
@@ -252,13 +300,17 @@ int iAdHeight;
             [self.eatSoundPlayer play];
         }
         
-        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(soundChanged:)
                                                      name:@"soundDidChange"
                                                    object:nil];
         
-        
+        // every 10 games, offer full version if they don't already have it.
+
+        if (![[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"] && [[NSUserDefaults standardUserDefaults] integerForKey:@"numberGames"]%10 == 0) {
+            [self.ourNewShop validateProductIdentifiers];
+            
+        }
     }
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "GameScene.h"
-#define blockSpeed -20.0
+#define blockSpeed -15.0
 
 static NSString* ballCategoryName = @"ball";
 static NSString* paddleCategoryName = @"paddle";
@@ -20,7 +20,6 @@ static const uint32_t bottomCategory = 0x1 << 1;
 static const uint32_t blockCategory = 0x1 << 2;
 static const uint32_t paddleCategory = 0x1 << 3;
 static const uint32_t superBlockCategory = 0x1 << 4;
-
 
 
 @interface GameScene()
@@ -46,6 +45,33 @@ int livesRemaining;
         
         blocksHit = 0;
         livesRemaining = 4;
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            
+            self.paddleString = @"paddleiPad.png";
+            self.blockString = @"blockiPad.png";
+            self.superBlockString = @"superBlockiPad.png";
+            
+            if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+                
+                self.paddleString = @"paddleiPadWide.png";
+                
+            }
+            
+        }
+        else {
+            
+            self.paddleString = @"paddleiPhone.png";
+            self.blockString = @"blockiPhone.png";
+            self.superBlockString = @"superBlockiPhone.png";
+            
+            if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
+                
+                self.paddleString = @"paddleiPhoneWide.png";
+
+            }
+            
+        }
         
         //    SKSpriteNode* background = [SKSpriteNode spriteNodeWithImageNamed:@"bg.png"];
         //    background.position = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
@@ -94,7 +120,7 @@ int livesRemaining;
         
         [ball.physicsBody applyImpulse:CGVectorMake(5.0f, (arc4random() % 15) + 3.0)];
         
-        paddle = [[SKSpriteNode alloc] initWithImageNamed: @"paddle.png"];
+        paddle = [[SKSpriteNode alloc] initWithImageNamed: self.paddleString];
         paddle.name = paddleCategoryName;
         paddle.position = CGPointMake(CGRectGetMidX(self.frame), .5*paddle.frame.size.height);
         [self addChild:paddle];
@@ -116,7 +142,7 @@ int livesRemaining;
         ball.physicsBody.categoryBitMask = ballCategory;
         paddle.physicsBody.categoryBitMask = paddleCategory;
         
-        ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory;
+        ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory | paddleCategory;
         
         self.physicsWorld.contactDelegate = self;
         [self addRowOfBlocks];
@@ -172,7 +198,7 @@ int livesRemaining;
 
 -(void)addSuperBlock {
     
-    SKSpriteNode *superBlock = [SKSpriteNode spriteNodeWithImageNamed:@"paddle.png"];
+    SKSpriteNode *superBlock = [SKSpriteNode spriteNodeWithImageNamed: self.superBlockString];
     
     int minX = superBlock.size.width / 2;
     int maxX = self.frame.size.width - superBlock.size.width / 2;
@@ -197,13 +223,13 @@ int livesRemaining;
 -(void)addRowOfBlocks {
     
     int numberOfBlocks = 3;
-    int blockWidth = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"].size.width;
+    int blockWidth = [SKSpriteNode spriteNodeWithImageNamed: self.blockString].size.width;
     float padding = 20.0f;
     // 2 Calculate the xOffset
     float xOffset = (self.frame.size.width - (blockWidth * numberOfBlocks + padding * (numberOfBlocks-1))) / 2;
     // 3 Create the blocks and add them to the scene
     for (int i = 1; i <= numberOfBlocks; i++) {
-        SKSpriteNode* block2 = [SKSpriteNode spriteNodeWithImageNamed:@"block.png"];
+        SKSpriteNode* block2 = [SKSpriteNode spriteNodeWithImageNamed:self.blockString];
         block2.position = CGPointMake((i-0.5f)*block2.frame.size.width + (i-1)*padding + xOffset, self.frame.size.height*0.95f);
         block2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block2.frame.size];
         block2.physicsBody.allowsRotation = NO;
@@ -245,7 +271,27 @@ int livesRemaining;
         }
     }
     
+    if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory) {
+        
+        if (ball.position.x > paddle.position.x + .3*paddle.size.width) {
+            
+          //  NSLog(@"right");
+            [ball.physicsBody applyImpulse:CGVectorMake(30.0f, 0.0f)];
+
+        }
+        
+        if (ball.position.x < paddle.position.x - .3*paddle.size.width) {
+            
+          //  NSLog(@"left");
+            [ball.physicsBody applyImpulse:CGVectorMake(-30.0f, 0.0f)];
+            
+        }
+        
+    }
+
+    
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == blockCategory) {
+        
         [secondBody.node removeFromParent];
         blocksHit++;
         NSString *blockString = [NSString stringWithFormat:@"Blocks Destroyed: %li", (long)blocksHit];
@@ -306,7 +352,7 @@ int livesRemaining;
         blocksHit = blocksHit + numberOfBricksBefore - numberOfBricksAfter;
         NSString *blockString = [NSString stringWithFormat:@"Blocks Destroyed: %li", (long)blocksHit];
         self.blocksHitLabel.text = blockString;
-
+        
     }
 }
 
@@ -342,7 +388,7 @@ int livesRemaining;
 
     float speed = sqrt(ball2.physicsBody.velocity.dx*ball2.physicsBody.velocity.dx + ball2.physicsBody.velocity.dy * ball2.physicsBody.velocity.dy);
     
-    NSLog(@"speed = %f", ball2.physicsBody.velocity.dy);
+  //  NSLog(@"speed = %f", ball2.physicsBody.velocity.dy);
     if (speed > 800) {
         ball2.physicsBody.linearDamping = 10.0f;
     } else {

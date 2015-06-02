@@ -7,9 +7,10 @@
 //
 
 #import "SettingsViewController.h"
+#import "Shop.h"
 
 
-@interface GameViewController : UIViewController <GameCenterManagerDelegate, ADBannerViewDelegate, SettingsDelegate>
+@interface GameViewController : UIViewController <GameCenterManagerDelegate, ADBannerViewDelegate, SettingsDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
@@ -33,5 +34,10 @@
 
 @property (nonatomic, assign) BOOL bannerIsVisible;
 @property (strong, nonatomic) ADBannerView *adView;
+
+@property (nonatomic) Shop *ourNewShop;
+
+
+
 
 @end

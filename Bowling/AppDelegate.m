@@ -26,6 +26,7 @@
                                                              [NSNumber numberWithInt:0], @"highScore",
                                                              [NSNumber numberWithInt:0], @"totalBlocksDestroyed",
                                                              [NSNumber numberWithInt:0], @"lastGameScore",
+                                                             [NSNumber numberWithInt:0], @"numberGames",
                                                              [NSNumber numberWithBool:false], @"fullVersion",
                                                              [NSNumber numberWithBool:true], @"isSoundOn",
                                                              nil]];
