@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) SKScene *scene;
 @property (nonatomic, strong) SKView *skView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIImageView *bgImage;
 
 @property (weak, nonatomic) IBOutlet UILabel *lastGameLabel;
@@ -28,6 +27,7 @@
 
 @property (strong, nonatomic) NSURL *backgroundMusicURL;
 @property (strong, nonatomic) NSURL *eatURL;
+
 @property (weak, nonatomic) IBOutlet ADBannerView *iAdOutlet;
 
 @property (weak, nonatomic) IBOutlet UILabel *webAddress;

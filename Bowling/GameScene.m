@@ -7,7 +7,8 @@
 //
 
 #import "GameScene.h"
-#define blockSpeed -15.0
+#define blockSpeed -40.0
+#define maxSpeed 600
 
 static NSString* ballCategoryName = @"ball";
 static NSString* paddleCategoryName = @"paddle";
@@ -51,6 +52,7 @@ int livesRemaining;
             self.paddleString = @"paddleiPad.png";
             self.blockString = @"blockiPad.png";
             self.superBlockString = @"superBlockiPad.png";
+            self.ballString = @"balliPad.png";
             
             if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
                 
@@ -64,6 +66,8 @@ int livesRemaining;
             self.paddleString = @"paddleiPhone.png";
             self.blockString = @"blockiPhone.png";
             self.superBlockString = @"superBlockiPhone.png";
+            self.ballString = @"balliPhone.png";
+
             
             if ([[NSUserDefaults standardUserDefaults] integerForKey:@"fullVersion"]) {
                 
@@ -86,9 +90,7 @@ int livesRemaining;
         NSString *blockString = [NSString stringWithFormat:@"Blocks Detroyed: %li", (long)blocksHit];
         self.blocksHitLabel.text = blockString;
         
-        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(addRowOfBlocks) userInfo:nil repeats:YES];
-        
-        self.superBlockTimer = [NSTimer scheduledTimerWithTimeInterval:14.0 target:self selector:@selector(addSuperBlock) userInfo:nil repeats:YES];
+        self.blockTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(dropBlock) userInfo:nil repeats:YES];
         
         self.physicsWorld.gravity = CGVectorMake(0.0f, -0.05f);
         
@@ -100,7 +102,7 @@ int livesRemaining;
         self.physicsBody.friction = 0.0f;
         
         // 1
-        ball = [SKSpriteNode spriteNodeWithImageNamed: @"ball.png"];
+        ball = [SKSpriteNode spriteNodeWithImageNamed: self.ballString];
         ball.name = ballCategoryName;
         ball.position = CGPointMake(0.5*self.frame.size.width, 0.7*self.frame.size.height);
         [self addChild:ball];
@@ -114,7 +116,7 @@ int livesRemaining;
         // 5
         ball.physicsBody.linearDamping = 0.0f;
         // 6
-        ball.physicsBody.allowsRotation = NO;
+        ball.physicsBody.allowsRotation = YES;
         
         ball.physicsBody.affectedByGravity = YES;
         
@@ -127,10 +129,9 @@ int livesRemaining;
         paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.frame.size];
         paddle.physicsBody.restitution = 1.0f;
         paddle.physicsBody.friction = 0.4f;
-        paddle.physicsBody.density = 1000.0;
+        paddle.physicsBody.density = 100000.0;
         paddle.physicsBody.allowsRotation = NO;
 
-        // make paddle static
         paddle.physicsBody.dynamic = YES;  // If no, ball can get pushed off screen!
         
         CGRect bottomRect = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 1);
@@ -145,7 +146,6 @@ int livesRemaining;
         ball.physicsBody.contactTestBitMask = bottomCategory | blockCategory | superBlockCategory | paddleCategory;
         
         self.physicsWorld.contactDelegate = self;
-        [self addRowOfBlocks];
 
     }
     return self;
@@ -196,6 +196,22 @@ int livesRemaining;
 }
 
 
+- (void)dropBlock {
+    
+    int randomNum = arc4random() % 15;   // 0 through 14
+  //  NSLog(@"random = %i", randomNum);
+    
+    if (randomNum <= 13) {
+        
+        [self addRegBlock];
+        
+    } else {
+        
+        [self addSuperBlock];
+    }
+}
+
+
 -(void)addSuperBlock {
     
     SKSpriteNode *superBlock = [SKSpriteNode spriteNodeWithImageNamed: self.superBlockString];
@@ -219,7 +235,31 @@ int livesRemaining;
     
 }
 
+-(void)addRegBlock {
+    
+    SKSpriteNode *regBlock = [SKSpriteNode spriteNodeWithImageNamed: self.blockString];
+    
+    int minX = regBlock.size.width / 2;
+    int maxX = self.frame.size.width - regBlock.size.width / 2;
+    int rangeX = maxX - minX;
+    int actualXStart = (arc4random() % rangeX) + minX;
+    
+    regBlock.position = CGPointMake(actualXStart, self.frame.size.height*0.95f);
+    regBlock.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:regBlock.frame.size];
+    regBlock.physicsBody.allowsRotation = NO;
+    regBlock.physicsBody.friction = 0.0f;
+    regBlock.physicsBody.velocity = CGVectorMake(0, blockSpeed);
+    regBlock.name = blockCategoryName;
+    regBlock.physicsBody.categoryBitMask = blockCategory;
+    regBlock.physicsBody.contactTestBitMask = bottomCategory | paddleCategory;
+    regBlock.physicsBody.affectedByGravity = YES;
+    regBlock.physicsBody.density = 1000.0;
+    [self addChild:regBlock];
+    
+}
 
+
+/*
 -(void)addRowOfBlocks {
     
     int numberOfBlocks = 3;
@@ -243,7 +283,7 @@ int livesRemaining;
         [self addChild:block2];
     }
 
-}
+}*/
 
 
 - (void)didBeginContact:(SKPhysicsContact*)contact {
@@ -275,14 +315,14 @@ int livesRemaining;
         
         if (ball.position.x > paddle.position.x + .3*paddle.size.width) {
             
-          //  NSLog(@"right");
+            NSLog(@"right");
             [ball.physicsBody applyImpulse:CGVectorMake(30.0f, 0.0f)];
 
         }
         
         if (ball.position.x < paddle.position.x - .3*paddle.size.width) {
             
-          //  NSLog(@"left");
+            NSLog(@"left");
             [ball.physicsBody applyImpulse:CGVectorMake(-30.0f, 0.0f)];
             
         }
@@ -389,7 +429,7 @@ int livesRemaining;
     float speed = sqrt(ball2.physicsBody.velocity.dx*ball2.physicsBody.velocity.dx + ball2.physicsBody.velocity.dy * ball2.physicsBody.velocity.dy);
     
   //  NSLog(@"speed = %f", ball2.physicsBody.velocity.dy);
-    if (speed > 800) {
+    if (speed > maxSpeed) {
         ball2.physicsBody.linearDamping = 10.0f;
     } else {
         ball2.physicsBody.linearDamping = 0.0f;
@@ -426,7 +466,7 @@ int livesRemaining;
     
     if (ball2.physicsBody.velocity.dy > -80.0 && ball2.physicsBody.velocity.dy < 0) {
         
-        [ball2.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
+        [ball2.physicsBody applyImpulse:CGVectorMake(0.0f, -10.0f)];
         
     }
     
@@ -434,7 +474,7 @@ int livesRemaining;
     
     if (ball2.physicsBody.velocity.dy < 80.0 && ball2.physicsBody.velocity.dy >= 0) {
         
-        [ball2.physicsBody applyImpulse:CGVectorMake(0.0f, 5.0f)];
+        [ball2.physicsBody applyImpulse:CGVectorMake(0.0f, 10.0f)];
         
     }
 }

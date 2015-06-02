@@ -21,6 +21,8 @@
 @property (nonatomic) NSString *paddleString;
 @property (nonatomic) NSString *blockString;
 @property (nonatomic) NSString *superBlockString;
+@property (nonatomic) NSString *ballString;
+
 
 
 @end

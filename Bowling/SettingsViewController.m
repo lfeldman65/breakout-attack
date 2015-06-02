@@ -42,11 +42,33 @@
     [self.soundLabel setFrame:CGRectMake(.6*sWidth, .06*sHeight, .23*sWidth, .1*sHeight)];
     [[self soundLabel] setFont:[UIFont fontWithName:@"Noteworthy" size:.06*sWidth]];
     
-    [self.soundSwitch setFrame:CGRectMake(.79*sWidth, .083*sHeight, .23*sWidth, .1*sHeight)];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        [self.soundSwitch setFrame:CGRectMake(.79*sWidth, .1*sHeight, .23*sWidth, .1*sHeight)];
+        
+    }
+    else {
+        
+        [self.soundSwitch setFrame:CGRectMake(.79*sWidth, .085*sHeight, .23*sWidth, .1*sHeight)];
+        
+    }
     
     [self.textView setFrame:CGRectMake(0, 0, .91*sWidth, .62*sHeight)];
-    self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .046*sWidth];
-    self.textView.center = CGPointMake(.5*sWidth, .5*sHeight);
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .04*sWidth];
+        self.textView.center = CGPointMake(.5*sWidth, .5*sHeight);
+
+    }
+    else {
+        
+        self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .05*sWidth];
+        self.textView.center = CGPointMake(.5*sWidth, .48*sHeight);
+
+
+    }
     
     [self.fullButton setFrame:CGRectMake(0, 0, .4*sWidth, 50)];
     self.fullButton.center = CGPointMake(.5*sWidth, .75*sHeight);

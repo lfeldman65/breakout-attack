@@ -48,18 +48,6 @@ int iAdHeight;
     self.eatSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.eatURL error:&error];
     self.eatSoundPlayer.numberOfLoops = 0;
     
- /*   self.imageView.animationImages = [NSArray arrayWithObjects:
-                                      
-                                      [UIImage imageNamed:@"h130.png"],
-                                      [UIImage imageNamed:@"h130green.png"],
-                                      [UIImage imageNamed:@"h130orange.png"],
-                                      [UIImage imageNamed:@"h130pink.png"],
-                                      nil];
-    
-    self.imageView.animationDuration = 1.0;
-    self.imageView.animationRepeatCount = 0;
-    [self.imageView startAnimating];*/
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkGameOver:)
@@ -119,20 +107,17 @@ int iAdHeight;
     [[self titleLabel] setFont:[UIFont fontWithName:@"Noteworthy" size:.11*sWidth]];
     self.titleLabel.center = CGPointMake(.5*sWidth, .23*sHeight);
 
-    [self.lastGameLabel setFrame:CGRectMake(0, 0, .5*sWidth, 50)];
+    [self.lastGameLabel setFrame:CGRectMake(0, 0, .5*sWidth, .11*sHeight)];
     self.lastGameLabel.font = [UIFont fontWithName: @"Noteworthy" size: .07*sWidth];
     self.lastGameLabel.center = CGPointMake(.5*sWidth, .4*sHeight);
     
-    [self.highScoreLabel setFrame:CGRectMake(0, 0, .5*sWidth, 50)];
+    [self.highScoreLabel setFrame:CGRectMake(0, 0, .5*sWidth, .11*sHeight)];
     self.highScoreLabel.font = [UIFont fontWithName: @"Noteworthy" size: .07*sWidth];
     self.highScoreLabel.center = CGPointMake(.5*sWidth, .6*sHeight);
     
     [self.startButton setFrame:CGRectMake(0, 0, sWidth, .1*sWidth)];
     self.startButton.titleLabel.font = [UIFont fontWithName: @"Noteworthy" size: .09*sWidth];
     self.startButton.center = CGPointMake(.5*sWidth, .8*sHeight);
-    
-    [self.imageView setFrame:CGRectMake(0, 0, .42*sWidth, .42*sWidth)];
-    self.imageView.center = CGPointMake(.5*sWidth, .53*sHeight);
     
     [self.bgImage setFrame:CGRectMake(0, 0, sWidth, sHeight)];
     self.bgImage.center = CGPointMake(.5*sWidth, .5*sHeight);
@@ -199,7 +184,6 @@ int iAdHeight;
     
     self.startButton.hidden = YES;
     self.settingsButton.hidden = YES;
-    self.imageView.hidden = YES;
     self.highScoreLabel.hidden = YES;
     self.titleLabel.hidden = YES;
     self.lastGameLabel.hidden = YES;
@@ -241,7 +225,6 @@ int iAdHeight;
         [self.scene removeFromParent];
         [self.skView presentScene:nil];
         
-        self.imageView.hidden = NO;
         self.highScoreLabel.hidden = NO;
         self.titleLabel.hidden = NO;
         self.lastGameLabel.hidden = NO;
@@ -282,15 +265,15 @@ int iAdHeight;
             
         }
         
-        if (lastGame >=5 && lastGame < 10) {
+        if (lastGame >=50 && lastGame < 100) {
             [[GameCenterManager sharedManager] saveAndReportAchievement:@"50blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
-        if (lastGame >= 10 && lastGame < 25) {
+        if (lastGame >= 100 && lastGame < 250) {
             [[GameCenterManager sharedManager] saveAndReportAchievement:@"100blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
-        if (lastGame >= 25) {
+        if (lastGame >= 250) {
             [[GameCenterManager sharedManager] saveAndReportAchievement:@"250blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
