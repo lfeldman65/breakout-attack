@@ -64,10 +64,16 @@
     }
     else {
         
-        self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .05*sWidth];
-        self.textView.center = CGPointMake(.5*sWidth, .48*sHeight);
-
-
+        if(sHeight==480) {
+        
+            self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .043*sWidth];
+            self.textView.center = CGPointMake(.5*sWidth, .48*sHeight);
+            
+        } else {
+            
+            self.textView.font = [UIFont fontWithName: @"Noteworthy" size: .05*sWidth];
+            self.textView.center = CGPointMake(.5*sWidth, .48*sHeight);
+        }
     }
     
     [self.fullButton setFrame:CGRectMake(0, 0, .4*sWidth, 50)];
