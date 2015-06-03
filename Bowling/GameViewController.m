@@ -32,32 +32,16 @@ int iAdHeight;
         iAdHeight = 50;
     }
     
-    NSError *error;
-    self.backgroundMusicURL = [[NSBundle mainBundle] URLForResource:@"background2" withExtension:@"wav"];
-    self.backgroundMusicPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.backgroundMusicURL error:&error];
-    self.backgroundMusicPlayer.numberOfLoops = -1;
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
-        
-        [self.backgroundMusicPlayer prepareToPlay];
-        [self.backgroundMusicPlayer play];
-
-    }
-    
-    self.eatURL = [[NSBundle mainBundle] URLForResource:@"eating" withExtension:@"mp3"];
-    self.eatSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.eatURL error:&error];
-    self.eatSoundPlayer.numberOfLoops = 0;
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkGameOver:)
                                                  name:@"gameOverNotification"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+  /*  [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(soundChanged:)
                                                  name:@"soundDidChange"
-                                               object:nil];
+                                               object:nil];*/
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"wasGameLaunched"]) {
         
@@ -196,10 +180,10 @@ int iAdHeight;
                                                  name:@"gameOverNotification"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+   /* [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(soundChanged:)
                                                  name:@"soundDidChange"
-                                               object:nil];
+                                               object:nil];*/
     
     self.scene = [[GameScene alloc] initWithSize:self.skView.bounds.size];
     self.scene.scaleMode = SKSceneScaleModeAspectFill;
@@ -277,16 +261,11 @@ int iAdHeight;
             [[GameCenterManager sharedManager] saveAndReportAchievement:@"250blocks" percentComplete:100 shouldDisplayNotification:YES];
         }
         
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
-            
-            [self.eatSoundPlayer prepareToPlay];
-            [self.eatSoundPlayer play];
-        }
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
+
+     /*   [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(soundChanged:)
                                                      name:@"soundDidChange"
-                                                   object:nil];
+                                                   object:nil];*/
         
         // every 10 games, offer full version if they don't already have it.
 
@@ -297,21 +276,22 @@ int iAdHeight;
     }
 }
 
+/*
 - (void)soundChanged:(NSNotification *)notification {
     
     if ([[notification name] isEqualToString:@"soundDidChange"]) {
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
             
-            [self.backgroundMusicPlayer prepareToPlay];
-            [self.backgroundMusicPlayer play];
+          //  [self.backgroundMusicPlayer prepareToPlay];
+          //  [self.backgroundMusicPlayer play];
             
         } else {
             
-            [self.backgroundMusicPlayer stop];
+        //    [self.backgroundMusicPlayer stop];
         }
     }
-}
+}*/
 
 -(void)settingsDidFinish:(SettingsViewController *)controller {
     

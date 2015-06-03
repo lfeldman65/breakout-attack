@@ -14,8 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *settingsButton;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
-@property (nonatomic, strong) AVAudioPlayer * backgroundMusicPlayer;
-@property (nonatomic, strong) AVAudioPlayer * eatSoundPlayer;
 
 @property (nonatomic, strong) SKScene *scene;
 @property (nonatomic, strong) SKView *skView;
@@ -24,9 +22,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastGameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *highScoreLabel;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-
-@property (strong, nonatomic) NSURL *backgroundMusicURL;
-@property (strong, nonatomic) NSURL *eatURL;
 
 @property (weak, nonatomic) IBOutlet ADBannerView *iAdOutlet;
 

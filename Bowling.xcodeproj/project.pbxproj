@@ -21,6 +21,8 @@
 		110E80BF1B16863700DF989C /* NSDataAES256.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BB1B16863700DF989C /* NSDataAES256.m */; };
 		110E80C01B16863700DF989C /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 110E80BD1B16863700DF989C /* GameCenterManager.m */; };
 		110E80C31B168D0900DF989C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 110E80C21B168D0900DF989C /* iAd.framework */; };
+		11B648221B1E66C1005AB6A3 /* pop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 11B648211B1E66C1005AB6A3 /* pop.mp3 */; };
+		11B648241B1E6A31005AB6A3 /* super.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 11B648231B1E6A30005AB6A3 /* super.mp3 */; };
 		11C1BEF21B179AC200DF06A0 /* Shop.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1BEF01B179AC200DF06A0 /* Shop.m */; };
 		11C1BEF41B179AF300DF06A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C1BEF31B179AF300DF06A0 /* StoreKit.framework */; };
 		11C1BEF71B17E7C400DF06A0 /* gamecenter.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C1BEF51B17E7C300DF06A0 /* gamecenter.png */; };
@@ -86,6 +88,8 @@
 		110E80BC1B16863700DF989C /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterManager.h; sourceTree = "<group>"; };
 		110E80BD1B16863700DF989C /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterManager.m; sourceTree = "<group>"; };
 		110E80C21B168D0900DF989C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		11B648211B1E66C1005AB6A3 /* pop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pop.mp3; sourceTree = "<group>"; };
+		11B648231B1E6A30005AB6A3 /* super.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = super.mp3; sourceTree = "<group>"; };
 		11C1BEF01B179AC200DF06A0 /* Shop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Shop.m; sourceTree = "<group>"; };
 		11C1BEF11B179AC200DF06A0 /* Shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shop.h; sourceTree = "<group>"; };
 		11C1BEF31B179AF300DF06A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -187,6 +191,8 @@
 		110E80761B161B4000DF989C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				11B648211B1E66C1005AB6A3 /* pop.mp3 */,
+				11B648231B1E6A30005AB6A3 /* super.mp3 */,
 				110E80B61B165AE600DF989C /* GameKit.framework */,
 				110E80771B161B4000DF989C /* Info.plist */,
 				110E80781B161B4000DF989C /* main.m */,
@@ -360,10 +366,12 @@
 				110E80811B161B4100DF989C /* GameScene.sks in Resources */,
 				11C1BF1B1B1E196600DF06A0 /* Icon-Spotlight-40@3x.png in Resources */,
 				11C1BF0D1B1E196600DF06A0 /* Icon-60@2x.png in Resources */,
+				11B648221B1E66C1005AB6A3 /* pop.mp3 in Resources */,
 				11C1BF1D1B1E196600DF06A0 /* Icon@2x.png in Resources */,
 				11C1BF0E1B1E196600DF06A0 /* Icon-60@3x.png in Resources */,
 				11C1BEF71B17E7C400DF06A0 /* gamecenter.png in Resources */,
 				11C1BF181B1E196600DF06A0 /* Icon-Small@3x.png in Resources */,
+				11B648241B1E6A31005AB6A3 /* super.mp3 in Resources */,
 				110E80871B161B4100DF989C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

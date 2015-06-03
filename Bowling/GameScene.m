@@ -313,6 +313,12 @@ int livesRemaining;
     
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == paddleCategory) {
         
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
+            
+            [self runAction:[SKAction playSoundFileNamed:@"pop.mp3" waitForCompletion:NO]];
+            
+        }
+
         if (ball.position.x > paddle.position.x + .3*paddle.size.width) {
             
             NSLog(@"right");
@@ -332,7 +338,15 @@ int livesRemaining;
     
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == blockCategory) {
         
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
+            
+            [self runAction:[SKAction playSoundFileNamed:@"pop.mp3" waitForCompletion:NO]];
+
+        }
+        
         [secondBody.node removeFromParent];
+        
         blocksHit++;
         NSString *blockString = [NSString stringWithFormat:@"Blocks Destroyed: %li", (long)blocksHit];
         self.blocksHitLabel.text = blockString;
@@ -365,6 +379,11 @@ int livesRemaining;
     
     if (firstBody.categoryBitMask == ballCategory && secondBody.categoryBitMask == superBlockCategory) {
         
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isSoundOn"]) {
+            
+            [self runAction:[SKAction playSoundFileNamed:@"super.mp3" waitForCompletion:NO]];
+            
+        }
         [secondBody.node removeFromParent];
         [ball.physicsBody applyImpulse:CGVectorMake(0.0f, -5.0f)];
         blocksHit++;

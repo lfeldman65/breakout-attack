@@ -121,9 +121,9 @@
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[NSNotificationCenter defaultCenter]
+  /*  [[NSNotificationCenter defaultCenter]
      postNotificationName:@"soundDidChange"
-     object:self];
+     object:self];*/
     
 }
 
